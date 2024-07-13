@@ -22,6 +22,14 @@ jobs:
           fetch-depth: 0
       - name: Set output git tag and commit message
         id: vars
+        # Run shell/bash scripts on CI, requires a permission.
+        # Execute this command below locally in your repo, then
+        # commit and push the script changes
+        # 
+        # Command: git update-index --chmod=+x your_script.sh
+        # References: 
+        # - https://aileenrae.co.uk/blog/github-actions-shell-script-permission-denied-error
+        # - https://github.com/orgs/community/discussions/26239#discussioncomment-3250911
         run: ./.github/scripts/functions.sh githubActionsVariables
       - name: Check output git variables
         env:
