@@ -133,7 +133,7 @@ namespace Firebase.Editor {
                 return;
               }
             }
-            catch(Exception e) {
+            catch(Exception) {
               // This one failed, ignore and move on to the next one.
             }
           }
