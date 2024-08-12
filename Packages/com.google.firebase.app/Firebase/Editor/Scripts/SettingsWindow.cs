@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-using Google;
+using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.Localization;
+using Google;
 
 namespace Firebase.Editor {
 
@@ -28,6 +28,7 @@ namespace Firebase.Editor {
   internal class SettingsWindowUpdater : AssetPostprocessor {
     public static System.Object assetsChangedLock = new System.Object();
     public static bool assetsChanged = false;
+    
     // Called when any asset is imported, deleted, or moved.
     private static void OnPostprocessAllAssets(
             string[] importedAssets, string[] deletedAssets,
@@ -89,6 +90,12 @@ namespace Firebase.Editor {
       Vector2 scrollBar;
       // The list of APIs to present information on.
       List<ApiInfo> apis;
+      
+      // LocalizedString with table/key references to localize error and warning messages
+      private LocalizedString MessagesLocalizedString => new LocalizedString()
+      {
+        TableReference = "FirebaseMessages"
+      };
 
       // If set, can render a footer in the scroll view.
       public Action Footer { get; set; }
@@ -102,7 +109,11 @@ namespace Firebase.Editor {
       void IMenuState.OnGUI(Stack<IMenuState> menus) {
         // Render the top section, which has the logo, and a short description.
         GUILayout.Label(titleTexture);
-        IndentedLabel(20, DocRef.FirebaseDescription);
+
+        MessagesLocalizedString.TableEntryReference = "FirebaseDescription";
+        var firebaseDescriptionLabel = MessagesLocalizedString.GetLocalizedString();
+        
+        IndentedLabel(20, firebaseDescriptionLabel);
 
         DrawLine();
 
@@ -140,30 +151,67 @@ namespace Firebase.Editor {
       // Draw the status of whether Android and iOS are connected, providing links to either the
       // documentation on how to connect, or to the console of the connected project.
       void DrawConnectionInfo() {
-        IndentedLabel(10, DocRef.Android, EditorStyles.boldLabel);
+        MessagesLocalizedString.TableEntryReference = "OpenConsole";
+        var openConsoleLabel = MessagesLocalizedString.GetLocalizedString();
+        
+        MessagesLocalizedString.TableEntryReference = "LearnMore";
+        var learnMoreText = MessagesLocalizedString.GetLocalizedString();
+        
+        MessagesLocalizedString.TableEntryReference = "Android";
+        var androidLabel = MessagesLocalizedString.GetLocalizedString();
+        
+        IndentedLabel(10, androidLabel, EditorStyles.boldLabel);
+        
         Indent(20, () => {
+            
           if (IsAndroidConnected()) {
-            GUILayout.Label(DocRef.AndroidConnected);
-            IndentedButtonProjectLink(0, DocRef.OpenConsole, s_androidProjectId, "android");
+            MessagesLocalizedString.TableEntryReference = "AndroidConnected";
+            var androidConnectedLabel = MessagesLocalizedString.GetLocalizedString();
+
+            GUILayout.Label(androidConnectedLabel);
+            IndentedButtonProjectLink(0, openConsoleLabel, s_androidProjectId, "android");
           }
           else {
-            GUILayout.Label(DocRef.AndroidDisconnected);
-            IndentedButtonLink(0, DocRef.LearnMore,
-                               Link.AndroidSetup);
+            MessagesLocalizedString.TableEntryReference = "AndroidDisconnected";
+
+            var androidDisconnectedLabel = MessagesLocalizedString.GetLocalizedString(
+              new {
+                googleServicesFile = "google-services.json"
+              }
+            );
+            
+            GUILayout.Label(androidDisconnectedLabel);
+
+            IndentedButtonLink(0, learnMoreText, Link.FIREBASE_ANDROID_SETUP);
           }
         });
 
-        IndentedLabel(10, DocRef.IOS, EditorStyles.boldLabel);
+        MessagesLocalizedString.TableEntryReference = "IOS";
+        var iosLabel = MessagesLocalizedString.GetLocalizedString();
+        
+        IndentedLabel(10, iosLabel, EditorStyles.boldLabel);
         Indent(20, () => {
           if (IsIosConnected()) {
-            GUILayout.Label(DocRef.IOSConnected);
-            IndentedButtonProjectLink(0, DocRef.OpenConsole, s_iosProjectId, "ios");
+            MessagesLocalizedString.TableEntryReference = "IOS";
+            var iosConnectedLabel = MessagesLocalizedString.GetLocalizedString();
+            
+            GUILayout.Label(iosConnectedLabel);
+            IndentedButtonProjectLink(0, openConsoleLabel, s_iosProjectId, "ios");
           }
           else {
-            GUILayout.Label(DocRef.IOSDisconnected);
-            IndentedButtonLink(0, DocRef.LearnMore,
-                               Link.IOSSetup);
+            MessagesLocalizedString.TableEntryReference = "IOSDisconnected";
+            
+            var iosConnectedLabel = MessagesLocalizedString.GetLocalizedString(
+              new {
+                googleServicesFile = "GoogleService-Info.plist"
+              }
+            );
+            
+            GUILayout.Label(iosConnectedLabel);
+
+            IndentedButtonLink(0, learnMoreText, Link.FIREBASE_IOS_SETUP);
           }
+          
         });
       }
     }

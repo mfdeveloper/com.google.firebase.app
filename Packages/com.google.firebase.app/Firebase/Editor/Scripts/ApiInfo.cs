@@ -16,7 +16,7 @@
 
 using UnityEditor;
 using UnityEngine;
-using System.Collections;
+using UnityEngine.Localization;
 
 namespace Firebase.Editor {
 
@@ -31,109 +31,195 @@ namespace Firebase.Editor {
     // Guides
     public virtual string GuideButton { get; set; }
     public virtual string GuideLink { get; set; }
+    
+    // LocalizedString with table/key references to localize error and warning messages
+    private static LocalizedString MessagesLocalizedString => new LocalizedString() { 
+        TableReference = "FirebaseMessages"
+    };
 
     // Images (not the 2x versions) should be pulled from the Android Studio Firebase plugin.
-    public ApiInfo(string image_path) {
-      Image = (Texture2D)UnityEditor.EditorGUIUtility.Load(
-        "Firebase/fb_" + image_path + (EditorGUIUtility.isProSkin ? "_dark" : "") + ".png");
+    public ApiInfo(string imagePath) {
+      Image = (Texture2D) EditorGUIUtility.Load(
+        "Firebase/fb_" + imagePath + (EditorGUIUtility.isProSkin ? "_dark" : "") + ".png");
     }
 
     public static ApiInfo Analytics() {
+      MessagesLocalizedString.TableEntryReference = "AnalyticsName";
+      var analyticsName = MessagesLocalizedString.GetLocalizedString();
+        
+      MessagesLocalizedString.TableEntryReference = "AnalyticsDescription";
+      var analyticsDescription = MessagesLocalizedString.GetLocalizedString();
+        
+      MessagesLocalizedString.TableEntryReference = "AnalyticsGuideSummary";
+      var analyticsGuideSummary = MessagesLocalizedString.GetLocalizedString();
+        
       return new ApiInfo("analytics")
       {
-        Name = DocRef.AnalyticsName,
-        Description = DocRef.AnalyticsDescription,
-        ApiReference = Link.AnalyticsReference,
-        GuideButton = DocRef.AnalyticsGuideSummary,
-        GuideLink = Link.AnalyticsGuide
+        Name = analyticsName,
+        Description = analyticsDescription,
+        ApiReference = Link.FIREBASE_ANALYTICS_API_REFERENCE,
+        GuideButton = analyticsGuideSummary,
+        GuideLink = Link.FIREBASE_ANALYTICS_GUIDE
       };
     }
 
     public static ApiInfo Auth() {
+      MessagesLocalizedString.TableEntryReference = "AuthName";
+      var authName = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "AuthDescription";
+      var authDescription = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "AuthGuideSummary";
+      var authGuideSummary = MessagesLocalizedString.GetLocalizedString();
+        
       return new ApiInfo("auth")
       {
-        Name = DocRef.AuthName,
-        Description = DocRef.AuthDescription,
-        ApiReference = Link.AuthReference,
-        GuideButton = DocRef.AuthGuideSummary,
-        GuideLink = Link.AuthGuide
+        Name = authName,
+        Description = authDescription,
+        ApiReference = Link.FIREBASE_AUTH_API_REFERENCE,
+        GuideButton = authGuideSummary,
+        GuideLink = Link.FIREBASE_AUTH_GUIDE
       };
     }
 
     public static ApiInfo CloudMessaging() {
+      MessagesLocalizedString.TableEntryReference = "CloudMessagingName";
+      var cloudMessagingName = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "CloudMessagingDescription";
+      var cloudMessagingDescription = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "CloudMessagingGuideSummary";
+      var cloudMessagingGuideSummary = MessagesLocalizedString.GetLocalizedString();
+        
       return new ApiInfo("cloud_messaging")
       {
-        Name = DocRef.CloudMessagingName,
-        Description = DocRef.CloudMessagingDescription,
-        ApiReference = Link.CloudMessagingReference,
-        GuideButton = DocRef.CloudMessagingGuideSummary,
-        GuideLink = Link.CloudMessagingGuide
+        Name = cloudMessagingName,
+        Description = cloudMessagingDescription,
+        ApiReference = Link.FIREBASE_MESSAGING_API_REFERENCE,
+        GuideButton = cloudMessagingGuideSummary,
+        GuideLink = Link.FIREBASE_MESSAGING_GUIDE
       };
     }
 
     public static ApiInfo Crashlytics() {
+      MessagesLocalizedString.TableEntryReference = "CrashlyticsName";
+      var crashlyticsName = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "CrashlyticsDescription";
+      var crashlyticsDescription = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "CrashlyticsGuideSummary";
+      var crashlyticsGuideSummary = MessagesLocalizedString.GetLocalizedString();
+      
       return new ApiInfo("crashlytics")
       {
-        Name = DocRef.CrashlyticsName,
-        Description = DocRef.CrashlyticsDescription,
-        ApiReference = Link.CrashlyticsReference,
-        GuideButton = DocRef.CrashlyticsGuideSummary,
-        GuideLink = Link.CrashlyticsGuide
+        Name = crashlyticsName,
+        Description = crashlyticsDescription,
+        ApiReference = Link.FIREBASE_CRASHLYTICS_API_REFERENCE,
+        GuideButton = crashlyticsGuideSummary,
+        GuideLink = Link.FIREBASE_CRASHLYTICS_GUIDE
       };
     }
 
     public static ApiInfo Database() {
+      MessagesLocalizedString.TableEntryReference = "DatabaseName";
+      var databaseName = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "DatabaseDescription";
+      var databaseDescription = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "DatabaseGuideSummary";
+      var databaseGuideSummary = MessagesLocalizedString.GetLocalizedString();
+
       return new ApiInfo("database")
       {
-        Name = DocRef.DatabaseName,
-        Description = DocRef.DatabaseDescription,
-        ApiReference = Link.DatabaseReference,
-        GuideButton = DocRef.DatabaseGuideSummary,
-        GuideLink = Link.DatabaseGuide
+        Name = databaseName,
+        Description = databaseDescription,
+        ApiReference = Link.FIREBASE_DATABASE_API_REFERENCE,
+        GuideButton = databaseGuideSummary,
+        GuideLink = Link.FIREBASE_DATABASE_GUIDE
       };
     }
 
     public static ApiInfo DynamicLinks() {
+      MessagesLocalizedString.TableEntryReference = "DynamicLinksName";
+      var dynamicLinksName = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "DynamicLinksDescription";
+      var dynamicLinksDescription = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "DynamicLinksGuideSummary";
+      var dynamicLinksGuideSummary = MessagesLocalizedString.GetLocalizedString();
+      
       return new ApiInfo("dynamic_links")
       {
-        Name = DocRef.DynamicLinksName,
-        Description = DocRef.DynamicLinksDescription,
-        ApiReference = Link.DynamicLinksReference,
-        GuideButton = DocRef.DynamicLinksGuideSummary,
-        GuideLink = Link.DynamicLinksGuide
+        Name = dynamicLinksName,
+        Description = dynamicLinksDescription,
+        ApiReference = Link.FIREBASE_DYNAMIC_LINKS_API_REFERENCE,
+        GuideButton = dynamicLinksGuideSummary,
+        GuideLink = Link.FIREBASE_DYNAMIC_LINKS_GUIDE
       };
     }
 
     public static ApiInfo Functions() {
+      MessagesLocalizedString.TableEntryReference = "FunctionsName";
+      var functionsName = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "FunctionsDescription";
+      var functionsDescription = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "FunctionsGuideSummary";
+      var functionsGuideSummary = MessagesLocalizedString.GetLocalizedString();
+      
       return new ApiInfo("functions")
       {
-        Name = DocRef.FunctionsName,
-        Description = DocRef.FunctionsDescription,
-        ApiReference = Link.FunctionsReference,
-        GuideButton = DocRef.FunctionsGuideSummary,
-        GuideLink = Link.FunctionsGuide
+        Name = functionsName,
+        Description = functionsDescription,
+        ApiReference = Link.FIREBASE_FUNCTIONS_API_REFERENCE,
+        GuideButton = functionsGuideSummary,
+        GuideLink = Link.FIREBASE_FUNCTIONS_GUIDE
       };
     }
 
     public static ApiInfo RemoteConfig() {
+      MessagesLocalizedString.TableEntryReference = "RemoteConfigName";
+      var remoteConfigName = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "RemoteConfigDescription";
+      var remoteConfigDescription = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "RemoteConfigGuideSummary";
+      var remoteConfigGuideSummary = MessagesLocalizedString.GetLocalizedString();
+      
       return new ApiInfo("config")
       {
-        Name = DocRef.RemoteConfigName,
-        Description = DocRef.RemoteConfigDescription,
-        ApiReference = Link.RemoteConfigReference,
-        GuideButton = DocRef.RemoteConfigGuideSummary,
-        GuideLink = Link.RemoteConfigGuide
+        Name = remoteConfigName,
+        Description = remoteConfigDescription,
+        ApiReference = Link.FIREBASE_CONFIG_API_REFERENCE,
+        GuideButton = remoteConfigGuideSummary,
+        GuideLink = Link.FIREBASE_CONFIG_GUIDE
       };
     }
 
     public static ApiInfo Storage() {
+      MessagesLocalizedString.TableEntryReference = "StorageName";
+      var storageName = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "StorageDescription";
+      var storageDescription = MessagesLocalizedString.GetLocalizedString();
+      
+      MessagesLocalizedString.TableEntryReference = "StorageGuideSummary";
+      var storageGuideSummary = MessagesLocalizedString.GetLocalizedString();
+      
       return new ApiInfo("storage")
       {
-        Name = DocRef.StorageName,
-        Description = DocRef.StorageDescription,
-        ApiReference = Link.StorageReference,
-        GuideButton = DocRef.StorageGuideSummary,
-        GuideLink = Link.StorageGuide
+        Name = storageName,
+        Description = storageDescription,
+        ApiReference = Link.FIREBASE_STORAGE_API_REFERENCE,
+        GuideButton = storageGuideSummary,
+        GuideLink = Link.FIREBASE_STORAGE_GUIDE
       };
     }
   }

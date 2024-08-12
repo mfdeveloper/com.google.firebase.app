@@ -26,10 +26,10 @@ using System.Reflection;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
+using UnityEngine.Localization;
 #if UNITY_IOS
-using UnityEditor.iOS.Xcode;
+  using UnityEditor.iOS.Xcode;
 #endif
-
 [InitializeOnLoad]
 internal class XcodeProjectPatcher : AssetPostprocessor {
     // When in the build process the project should be patched.
@@ -77,29 +77,34 @@ internal class XcodeProjectPatcher : AssetPostprocessor {
         }
     }
 
+    // LocalizedString with table/key references to localize error and warning messages
+    private static LocalizedString MessagesLocalizedString => new LocalizedString() {
+        TableReference = "FirebaseMessages"
+    };
+
     static XcodeProjectPatcher() {
         // Delay initialization until the build target is iOS+ and the
         // editor is not in play mode.
         EditorInitializer.InitializeOnMainThread(
-            condition: () => {
-                return (EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS ||
-                        EditorUserBuildSettings.activeBuildTarget == BuildTarget.tvOS) &&
-                        !EditorApplication.isPlayingOrWillChangePlaymode;
-            }, initializer: () => {
-                #if UNITY_IOS
-                // We attempt to read the config even when the target platform isn't
-                // iOS+ as the project settings are surfaced in the settings window.
-                Google.IOSResolver.RemapXcodeExtension();
-                ReadConfigOnUpdate();
-                PlayServicesResolver.BundleIdChanged -= OnBundleIdChanged;
-                if (Enabled) {
-                    PlayServicesResolver.BundleIdChanged += OnBundleIdChanged;
-                    CheckConfiguration();
-                }
-                #endif
-                
-                return true;
-            }, name: "XcodeProjectPatcher");
+          condition: () => {
+              return (EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS ||
+                          EditorUserBuildSettings.activeBuildTarget == BuildTarget.tvOS) &&
+                          !EditorApplication.isPlayingOrWillChangePlaymode;
+          }, initializer: () => {
+            #if UNITY_IOS
+            // We attempt to read the config even when the target platform isn't
+            // iOS+ as the project settings are surfaced in the settings window.
+            Google.IOSResolver.RemapXcodeExtension();
+            ReadConfigOnUpdate();
+            PlayServicesResolver.BundleIdChanged -= OnBundleIdChanged;
+            if (Enabled) {
+                PlayServicesResolver.BundleIdChanged += OnBundleIdChanged;
+                CheckConfiguration();
+            }
+            #endif
+              
+            return true;
+          }, name: "XcodeProjectPatcher");
     }
 
     // Some versions of Unity 4.x crash when you to try to read the asset database from static
@@ -139,7 +144,15 @@ internal class XcodeProjectPatcher : AssetPostprocessor {
                 exception is TypeInitializationException) {
                 if (Enabled) {
                     // It's likely we failed to load the iOS Xcode extension.
-                    Debug.LogWarning(DocRef.FailedToLoadIOSExtensions);
+                    MessagesLocalizedString.TableEntryReference = "FailedToLoadIOSExtensions";
+
+                    var asyncOperationFile = MessagesLocalizedString.GetLocalizedStringAsync();
+                    asyncOperationFile.Completed += (op) =>
+                    {
+                        if (op.IsDone && !string.IsNullOrEmpty(op.Result)) { 
+                            Debug.LogWarning(op.Result);
+                        }
+                    };
                 }
             } else {
                 throw exception;
@@ -184,22 +197,34 @@ internal class XcodeProjectPatcher : AssetPostprocessor {
         BuildTarget buildTarget = EditorUserBuildSettings.activeBuildTarget;
         if ((buildTarget == BuildTarget.iOS || buildTarget == BuildTarget.tvOS) &&
             Application.platform == RuntimePlatform.WindowsEditor) {
-            Debug.LogWarning(DocRef.IOSNotSupportedOnWindows);
+
+            MessagesLocalizedString.TableEntryReference = "IOSNotSupportedOnWindows";
+
+            var asyncOperationFile = MessagesLocalizedString.GetLocalizedStringAsync();
+            asyncOperationFile.Completed += (op) =>
+            {
+                if (op.IsDone && !string.IsNullOrEmpty(op.Result)) { 
+                    Debug.LogWarning(op.Result);
+                }
+            };
         }
     }
 
     // Called when the bundle ID is updated.
     private static void OnBundleIdChanged(
-            object sender,
-            PlayServicesResolver.BundleIdChangedEventArgs args) {
+        object sender,
+        PlayServicesResolver.BundleIdChangedEventArgs args
+    ) {
         ReadConfig(errorOnNoConfig: false);
         CheckBundleId(GetIosPlusApplicationId());
     }
 
     // Check the bundle ID
-    private static string CheckBundleId(string bundleId,
-                                        bool promptUpdate = true,
-                                        bool logErrorOnMissingBundleId = true) {
+    private static string CheckBundleId(
+        string bundleId,
+        bool promptUpdate = true,
+        bool logErrorOnMissingBundleId = true
+    ) {
         if (configFile == null) {
             return null;
         }
@@ -209,50 +234,61 @@ internal class XcodeProjectPatcher : AssetPostprocessor {
             return null;
         }
         if (!configBundleId.Equals(bundleId) && logErrorOnMissingBundleId
-            && allBundleIds.Count > 0) {
+          && allBundleIds.Count > 0) {
             // Report an error, prompt user to use the bundle ID
             // from the plist.
             string[] bundleIds = allBundleIds.ToArray();
-            string errorMessage =
-                String.Format(DocRef.GoogleServicesFileBundleIdMissing,
-                    bundleId, "GoogleServices-Info.plist", String.Join(", ", bundleIds),
-                    Link.IOSAddApp);
+
+            MessagesLocalizedString.TableEntryReference = "GoogleServicesFileBundleIdMissing";
+
+            string errorMessage = MessagesLocalizedString.GetLocalizedString(
+                new {
+                    bundleId,
+                    googleServicesFile = "GoogleServices-Info.plist",
+                    availableBundleIds = string.Join(", ", bundleIds),
+                    linkInfo = Link.FIREBASE_IOS_ADD_APP
+                }
+            );
+                        
             if (promptUpdate && !spamguard) {
                 ChooserDialog.Show(
-                    "Please fix your Bundle ID",
-                    "Select a valid Bundle ID from your Firebase " +
-                    "configuration.",
-                    String.Format("Your bundle ID {0} is not present in your " +
+                  "Please fix your Bundle ID",
+                  "Select a valid Bundle ID from your Firebase " +
+                  "configuration.",
+                  String.Format("Your bundle ID {0} is not present in your " +
                                   "Firebase configuration.  A mismatched bundle ID " +
                                   "will result in your application to fail to " +
                                   "initialize.\n\n" +
                                   "New Bundle ID:", bundleId),
-                    bundleIds,
-                    0,
-                    "Apply",
-                    "Cancel",
-                    selectedBundleId => {
-                        if (!String.IsNullOrEmpty(selectedBundleId)) {
-                            switch(EditorUserBuildSettings.activeBuildTarget) {
-                                case BuildTarget.iOS:
-                                    UnityCompat.SetApplicationId(BuildTarget.iOS, selectedBundleId);
-                                    break;
-                                case BuildTarget.tvOS:
-                                    UnityCompat.SetApplicationId(BuildTarget.tvOS, selectedBundleId);
-                                    break;
-                                default:
-                                    throw new Exception("unsupported iOS+ version");
-                            }
-                        } else {
-                            Measurement.ReportWithBuildTarget("bundleidmismatch/cancel", null,
-                                                              "Mismatched Bundle ID: Cancel");
-                            // If the user hits cancel, we disable the dialog to
-                            // avoid spamming the user.
-                            spamguard = true;
-                            Debug.LogError(errorMessage);
-                        }
-                        ReadConfig();
-                    });
+                  bundleIds,
+                  0,
+                  "Apply",
+                  "Cancel",
+                  selectedBundleId => {
+                      if (!String.IsNullOrEmpty(selectedBundleId)) {
+                          switch(EditorUserBuildSettings.activeBuildTarget) {
+                            case BuildTarget.iOS:
+                                UnityCompat.SetApplicationId(BuildTarget.iOS, selectedBundleId);
+                                break;
+                            case BuildTarget.tvOS:
+                                UnityCompat.SetApplicationId(BuildTarget.tvOS, selectedBundleId);
+                                break;
+                            default:
+                                throw new Exception("unsupported iOS+ version");
+                          }
+                      } else {
+                          Measurement.ReportWithBuildTarget(
+                            "bundleidmismatch/cancel", 
+                            null,
+                            "Mismatched Bundle ID: Cancel"
+                          );
+                          // If the user hits cancel, we disable the dialog to
+                          // avoid spamming the user.
+                          spamguard = true;
+                          Debug.LogError(errorMessage);
+                      }
+                      ReadConfig();
+                  });
             } else {
                 Debug.LogError(errorMessage);
             }
@@ -262,8 +298,11 @@ internal class XcodeProjectPatcher : AssetPostprocessor {
 
     // Called when any asset is imported, deleted, or moved.
     private static void OnPostprocessAllAssets(
-            string[] importedAssets, string[] deletedAssets,
-            string[] movedAssets, string[] movedFromPath) {
+        string[] importedAssets, 
+        string[] deletedAssets,
+        string[] movedAssets, 
+        string[] movedFromPath
+    ) {
         // We track the config file state even when the target isn't iOS+
         // as the project settings are surfaced in the settings window.
         if (!Enabled) return;
@@ -292,8 +331,8 @@ internal class XcodeProjectPatcher : AssetPostprocessor {
         allBundleIds.Clear();
 
         foreach (var guid in AssetDatabase.FindAssets(
-                     String.Format("{0}", GOOGLE_SERVICES_INFO_PLIST_BASENAME),
-                     new [] { "Assets"})) {
+                        String.Format("{0}", GOOGLE_SERVICES_INFO_PLIST_BASENAME),
+                        new [] { "Assets"})) {
             string path = AssetDatabase.GUIDToAssetPath(guid);
             if (Path.GetFileName(path) == GOOGLE_SERVICES_INFO_PLIST_FILE) {
                 plists[path] = path;
@@ -304,9 +343,22 @@ internal class XcodeProjectPatcher : AssetPostprocessor {
         string selectedFile = files.Length >= 1 ? files[0] : null;
         if (files.Length == 0) {
             if (errorOnNoConfig && Enabled) {
-                Debug.LogError(
-                    String.Format(DocRef.GoogleServicesIOSFileMissing,
-                        GOOGLE_SERVICES_INFO_PLIST_FILE, Link.IOSAddApp));
+
+                MessagesLocalizedString.TableEntryReference = "GoogleServicesIOSFileMissing";
+
+                var asyncOperationFile = MessagesLocalizedString.GetLocalizedStringAsync(
+                  new {
+                        file = GOOGLE_SERVICES_INFO_PLIST_FILE,
+                        linkInfo = Link.FIREBASE_IOS_ADD_APP
+                    }
+                );
+
+                asyncOperationFile.Completed += (op) =>
+                {
+                    if (op.IsDone && !string.IsNullOrEmpty(op.Result)) { 
+                    Debug.LogError(op.Result);
+                    }
+                };
             }
         } else if (files.Length > 1) {
             var bundleId = GetIosPlusApplicationId();
@@ -322,12 +374,32 @@ internal class XcodeProjectPatcher : AssetPostprocessor {
                 }
             }
             // If the config file changed, warn the user about the selected file.
-            if (String.IsNullOrEmpty(previousConfigFile) ||
+            if (string.IsNullOrEmpty(previousConfigFile) ||
                 !selectedFile.Equals(previousConfigFile)) {
-                Debug.LogWarning(
-                    String.Format(DocRef.GoogleServicesFileMultipleFiles,
-                        GOOGLE_SERVICES_INFO_PLIST_FILE,
-                        selectedFile, selectedBundleId, String.Join("\n", files)));
+            
+                MessagesLocalizedString.TableEntryReference = "GoogleServicesFileMultipleFiles";
+
+                var asyncOperationFile = MessagesLocalizedString.GetLocalizedStringAsync(
+                  new {
+                        file = GOOGLE_SERVICES_INFO_PLIST_FILE,
+                        usingFile = selectedFile,
+                        bundleId = selectedBundleId,
+                        presentFiles = string.Join("\n", files)
+                    }
+                );
+
+                asyncOperationFile.Completed += (op) =>
+                {
+                    if (op.IsDone && !string.IsNullOrEmpty(op.Result)) {
+                        Debug.LogWarningFormat(
+                            op.Result,
+                            GOOGLE_SERVICES_INFO_PLIST_FILE,
+                            selectedFile, 
+                            selectedBundleId, 
+                            string.Join("\n", files)
+                        );
+                    }
+                };
             }
         }
         return selectedFile;
@@ -338,8 +410,8 @@ internal class XcodeProjectPatcher : AssetPostprocessor {
     /// </summary>
     [PostProcessBuildAttribute(BUILD_ORDER_ADD_CONFIG)]
     internal static void OnPostProcessAddGoogleServicePlist(
-            BuildTarget buildTarget, 
-            string pathToBuiltProject
+        BuildTarget buildTarget, 
+        string pathToBuiltProject
     ) {
         if (!Enabled) return;
         string platform = (buildTarget == BuildTarget.iOS) ? "iOS" : "tvOS";
@@ -370,6 +442,8 @@ internal class XcodeProjectPatcher : AssetPostprocessor {
         File.Copy(configFile, Path.Combine(pathToBuiltProject,
                                             configFileBasename), true);
         #if UNITY_IOS
+        
+
         // Add the config file to the Xcode project.
         string pbxprojPath =
             Google.IOSResolver.GetProjectPath(pathToBuiltProject);
@@ -412,6 +486,7 @@ internal class XcodeProjectPatcher : AssetPostprocessor {
         string pathToBuiltProject
     ) {
         #if UNITY_IOS
+
         // DLLs that trigger post processing by this method.
         // We use the DLL names here as:
         // * Pod dependencies may not be present if frameworks are manually
@@ -448,16 +523,43 @@ internal class XcodeProjectPatcher : AssetPostprocessor {
         if (!configDict.TryGetValue("REVERSED_CLIENT_ID",
                                     out reversedClientId)) {
             Measurement.analytics.Report("ios/xcodepatch/reversedclientid/failed",
-                                         "Add Reversed Client ID Failed");
-            Debug.LogError(
-                String.Format(DocRef.PropertyMissingForGoogleSignIn,
-                    GOOGLE_SERVICES_INFO_PLIST_FILE, "REVERSED_CLIENT_ID",
-                    Link.IOSAddApp));
+                                            "Add Reversed Client ID Failed");
+
+            MessagesLocalizedString.TableEntryReference = "PropertyMissingForGoogleSignIn";
+
+            var asyncOperationFile = MessagesLocalizedString.GetLocalizedStringAsync(
+              new {
+                  file = GOOGLE_SERVICES_INFO_PLIST_FILE,
+                  clientId = "REVERSED_CLIENT_ID",
+                  linkInfo = Link.FIREBASE_IOS_ADD_APP
+              }
+            );
+
+            asyncOperationFile.Completed += (op) =>
+            {
+                if (op.IsDone && !string.IsNullOrEmpty(op.Result))
+                {
+                    Debug.LogError(op.Result);
+                }
+            };
         }
         if (!configDict.TryGetValue("BUNDLE_ID", out bundleId)) {
-            Debug.LogError(
-                String.Format(DocRef.PropertyMissingForGoogleSignIn,
-                    GOOGLE_SERVICES_INFO_PLIST_FILE, "BUNDLE_ID", Link.IOSAddApp));
+            MessagesLocalizedString.TableEntryReference = "PropertyMissingForGoogleSignIn";
+
+            var asyncOperationFile = MessagesLocalizedString.GetLocalizedStringAsync(
+              new {
+                  file = GOOGLE_SERVICES_INFO_PLIST_FILE,
+                  clientId = "BUNDLE_ID",
+                  linkInfo = Link.FIREBASE_IOS_ADD_APP
+              }
+            );
+
+            asyncOperationFile.Completed += (op) =>
+            {
+                if (op.IsDone && !string.IsNullOrEmpty(op.Result)) {
+                    Debug.LogError(op.Result);
+                }
+            };
         }
 
         // Update the Xcode project's Info.plist.
@@ -495,6 +597,7 @@ internal class XcodeProjectPatcher : AssetPostprocessor {
         }
         // Finished, Write to File
         File.WriteAllText(plistPath, plist.WriteToString());
+
         #endif
     }
 
@@ -504,6 +607,7 @@ internal class XcodeProjectPatcher : AssetPostprocessor {
         string pathToBuiltProject
     ) {
         #if UNITY_IOS
+        
         const string WorkaroundNotAppliedMessage =
             "Unable to apply NSURLSession workaround. If " +
             "NSAllowsArbitraryLoads is set to a different value than " +
@@ -556,7 +660,10 @@ internal class XcodeProjectPatcher : AssetPostprocessor {
         }
 
         File.WriteAllText(plistPath, plist.WriteToString());
+
         #endif
     }
+    
 }
+
 }  // namespace Firebase.Editor

@@ -4,5 +4,6 @@
     "dotnet.preferCSharpExtension": true,
     "dotnetAcquisitionExtension.enableTelemetry": false,
     "terminal.integrated.defaultProfile.windows": "Git Bash",
-    "workbench.colorTheme": "Visual Studio 2019 Dark"
+    "workbench.colorTheme": "Visual Studio 2019 Dark",
+    "editor.tabSize": 2
 }

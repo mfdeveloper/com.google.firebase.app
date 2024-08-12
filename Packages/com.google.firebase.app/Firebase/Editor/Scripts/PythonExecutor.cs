@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
+
 namespace Firebase.Editor {
     using System;
     using System.IO;
     using System.Collections.Generic;
 
     // For CommandLine.
-    using GooglePlayServices;
     using UnityEditor;
     using UnityEngine;
+    using UnityEngine.Localization;
+    using GooglePlayServices;
 
     /// <summary>
     /// Finds a Python script.
@@ -54,6 +56,15 @@ namespace Firebase.Editor {
         /// GUID of the windows script runner if it isn't found in scriptPath.
         /// </summary>
         private string windowsScriptGuid;
+        
+        /// <summary>
+        /// <see cref="LocalizedString"/> with table/key references to localize
+        /// error and warning messages
+        /// </summary>
+        private LocalizedString MessagesLocalizedString => new LocalizedString()
+        {
+            TableReference = "FirebaseMessages"
+        };
 
         /// <summary>
         /// Construct a python script executor.
@@ -199,9 +210,26 @@ namespace Firebase.Editor {
         /// </summary>
         private CommandLine.Result SuggestWorkaroundsOnFailure(CommandLine.Result result) {
             if (result.exitCode != 0 && Executable != PythonInterpreter) {
-                Debug.LogWarning(String.Format(DocRef.PythonScriptExecutionFailed, result.message,
-                                               Executable));
+                
+                MessagesLocalizedString.TableEntryReference = "PythonScriptExecutionFailed";
+                MessagesLocalizedString.Arguments = new object[]
+                {
+                    new
+                    {
+                        message = result.message,
+                        executable = Executable
+                    }
+                };
+
+                var asyncOperationFile = MessagesLocalizedString.GetLocalizedStringAsync();
+                asyncOperationFile.Completed += (op) =>
+                {
+                    if (op.IsDone && !string.IsNullOrEmpty(op.Result)) { 
+                        Debug.LogWarning(op.Result);
+                    }
+                };
             }
+            
             return result;
         }
 

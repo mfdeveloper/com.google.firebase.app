@@ -1,0 +1,320 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: FirebaseMessages_pt-BR
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: pt-BR
+  m_SharedData: {fileID: 11400000, guid: d112259503298c24e814cc5957fb325a, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 1163561765529976835
+  m_TableData:
+  - m_Id: 701502771200
+    m_Localized: "O Bundle ID {bundleId} do projeto n\xE3o corresponde a nenhuma
+      ID de bundle nos seus arquivos {googleServicesFile}.\r\nIsso resultar\xE1 em
+      um aplicativo que n\xE3o ser\xE1 inicializado.\n\nIDs de pacotes dispon\xEDveis:\r\n{availableBundleIds}\r\n\r\nVoc\xEA
+      precisa de:\n\r\n * Corrija o ID do pacote do seu aplicativo em \"Player Settings
+      --> Bundle Identifier\"\r\nou:\r\n * Adicione outro aplicativo ao seu projeto
+      do Firebase\r\n  Goto {linkInfo}\r e adicione o novo arquivo de configura\xE7\xE3o
+      ao seu projeto."
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976835
+  - m_Id: 39543026929664
+    m_Localized: "V\xE1rios arquivos {file} encontrados em seu projeto. Usando {usingFile}
+      (bundle ID {bundleId}) para configurar o Firebase.\r\n\r\nTodos os arquivos
+      presentes:\r\n{presentFiles}"
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976835
+  - m_Id: 40468391055360
+    m_Localized: "N\xE3o foi poss\xEDvel encontrar a ferramenta de linha de comando
+      {resourceGenerator} necess\xE1ria para a gera\xE7\xE3o de recursos do Firebase
+      Android.\r\n{resourceGenerator} \xE9 necess\xE1rio para gerar o arquivo de
+      recursos do Firebase Android {googleServicesOutputFile} de {inputPath}. Sem
+      os recursos do Firebase para Android, seu aplicativo n\xE3o ser\xE1 inicializado.\r\n{resourceGenerator}
+      foi distribu\xEDdo com cada plugin do Firebase Unity SDK, ele foi exclu\xEDdo?\r\n\r\n{exceptionMessage}"
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976835
+  - m_Id: 42426845810688
+    m_Localized: "N\xE3o foi poss\xEDvel localizar os arquivos google-services.json
+      ou GoogleService-Info.plist."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43037200928768
+    m_Localized: "Nenhum arquivo {googleServicesFile} encontrado em seu projeto,
+      portanto, n\xE3o \xE9 poss\xEDvel gerar o arquivo de recursos do Firebase Android
+      {googleServicesOutputFile}.\r\nA cria\xE7\xE3o sem os recursos do Firebase
+      para Android ({googleServicesOutputFile} resultar\xE1 em um aplicativo que
+      n\xE3o ser\xE1 inicializado.\r\n\r\nPara resolver este problema, siga as instru\xE7\xF5es
+      de configura\xE7\xE3o em {androidSetupLink}"
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976835
+  - m_Id: 44705539870720
+    m_Localized: "Arquivo gerado do Firebase Android Resources {googleServicesOutputFile}
+      de {inputPath}\r\n\t\r\nExecutado {commandLineForLog}"
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976835
+  - m_Id: 45136152285184
+    m_Localized: "A gera\xE7\xE3o do arquivo de recursos do Firebase Android {googleServiceOutputFile}
+      de {inputPath} falhou.\r\nSe voc\xEA n\xE3o tiver inclu\xEDdo um arquivo de
+      recurso v\xE1lido do Firebase para Android no seu aplicativo, ele n\xE3o ser\xE1
+      inicializado.\r\n\r\n{commandLineForLog}\r\n{result}\r\n\r\nVoc\xEA pode come\xE7ar
+      a diagnosticar esse problema executando \"{commandLineForLog}\" na linha de
+      comando."
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976835
+  - m_Id: 46005681836032
+    m_Localized: "N\xE3o foi poss\xEDvel analisar o arquivo {fileName} como um arquivo
+      plist. \xC9 poss\xEDvel fazer o download novamente a partir do console do Firebase?"
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976835
+  - m_Id: 46490547572736
+    m_Localized: "N\xE3o foi poss\xEDvel copiar o arquivo {filename} para {googleServicesOutputPath}."
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976835
+  - m_Id: 328604216119296
+    m_Localized: "Falha ao criar o diret\xF3rio {directory}. O diret\xF3rio atual
+      \xE9 somente leitura?"
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976835
+  - m_Id: 2535430869405696
+    m_Localized: "O execut\xE1vel Python {message} falhou. \n\nSe voc\xEA estiver
+      usando o Windows 7/8, tente instalar o Windows Universal C Runtime https://www.microsoft.com/en-us/download/details.aspx?id=48234
+      e tente novamente. \n\nOu voc\xEA pode tentar: \n- Instalar o Python \n- Adicione
+      o Python ao vari\xE1vel de ambiente PATH do seu sistema operacional\n- Exclua
+      o execut\xE1vel {executable} que for\xE7ar\xE1 o Firebase a usar o interpretador
+      Python\n- Reinicie o Unity"
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976835
+  - m_Id: 2538013444984832
+    m_Localized: "Vers\xE3o minima do Android incorreta."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2940590615613440
+    m_Localized: "O SDK Android de destino m\xEDnimo precisa ser definido para o
+      n\xEDvel \"{minApiLevel}\" ou superior. \n\nAltere a vers\xE3o do SDK Android
+      para pelo menos \"API de n\xEDvel {minApiLevel}\" em: \nBuild Settings -> Player
+      Settings -> Other Settings -> Identification -> Minimum API Level"
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976835
+  - m_Id: 2942004691652608
+    m_Localized: "Mudar vers\xE3o do SDK do Android?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2946692640067584
+    m_Localized: "N\xE3o foi poss\xEDvel definir o n\xEDvel m\xEDnimo de destino
+      do SDK do Android para {minApiLevel}, isso pode ser porque voc\xEA tem uma
+      vers\xE3o mais antiga do SDK do Android instalado na sua maquina.\n\nTente
+      atualizar seu SDK do Android e definir o n\xEDvel para {minApiLevel} novamente."
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976835
+  - m_Id: 2948480583782400
+    m_Localized: Sim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2948517292331008
+    m_Localized: "N\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3255768771121152
+    m_Localized: "O Firebase oferece as ferramentas e a infraestrutura do Google
+      para ajudar voc\xEA a desenvolver, crescer e ganhar dinheiro com seu aplicativo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3257408483938304
+    m_Localized: Android
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3257840597913600
+    m_Localized: Pronto para usar o Firebase no Android.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3258292173459456
+    m_Localized: Abrir no Console
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3258745489641472
+    m_Localized: Para conectar o Firebase para Android, adicione o {googleServicesFile}
+      do Firebase aos seus Assets.
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976835
+  - m_Id: 3259479698362368
+    m_Localized: Leia mais
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3261406368681984
+    m_Localized: iOS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3261575667568640
+    m_Localized: Pronto para usar o Firebase no Android.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3262755382677504
+    m_Localized: Para conectar o Firebase para iOS, adicione o {googleServicesFile}
+      do Firebase aos seus Assets.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3282899630739456
+    m_Localized: Analytics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3282979830026240
+    m_Localized: "Me\xE7a a atividade e o engajamento do usu\xE1rio com an\xE1lises
+      gratuitas, f\xE1ceis e ilimitadas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3283219509334016
+    m_Localized: Registrar um evento do Analytics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3288924928790528
+    m_Localized: "Autentica\xE7\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3289012539412480
+    m_Localized: "Fa\xE7a login e gerencie usu\xE1rios com facilidade, aceitando
+      e-mails, Google Sign-In, Facebook e outros provedores de autentica\xE7\xE3o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3289506695532544
+    m_Localized: "Email e senha de autentica\xE7\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3290300593393664
+    m_Localized: Messagens em Nuvem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3290711870066688
+    m_Localized: "Entregue e receba mensagens e notifica\xE7\xF5es de forma confi\xE1vel
+      na nuvem e no dispositivo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3291120831483904
+    m_Localized: Configure o Cloud Messaging do Firebase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3292544311152640
+    m_Localized: Crashlytics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3292711168954368
+    m_Localized: "Obtenha informa\xE7\xF5es claras e acion\xE1veis sobre problemas
+      de aplicativos com esta poderosa solu\xE7\xE3o de relat\xF3rios de falhas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3293564093255680
+    m_Localized: 'Configure o Crashlytics do Firebase '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3294666616393728
+    m_Localized: Banco de Dados em Tempo Real
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3295043982118912
+    m_Localized: Armazene e sincronize dados em todos os clientes em tempo real.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3295296634408960
+    m_Localized: Configure o Banco de dados em Tempo Real do Firebase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3296534126055424
+    m_Localized: "Links din\xE2micos"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3296763671924736
+    m_Localized: "Envie os usu\xE1rios para o lugar certo no seu aplicativo, esteja
+      ele instalado ou n\xE3o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3297733860577280
+    m_Localized: "Fun\xE7\xF5es em Nuvem para Firebase"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3298144327749632
+    m_Localized: "Configure Fun\xE7\xF5es em Nuvem para Firebase"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3301653093732352
+    m_Localized: "Configura\xE7\xE3o Remota"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3314882905821184
+    m_Localized: "Personalize e crie experimentos de comportamento do aplicativo
+      usando par\xE2metros de configura\xE7\xE3o baseados em nuvem."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3315429062922240
+    m_Localized: "Configure Firebase Configura\xE7\xE3o Remota"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3317079907422208
+    m_Localized: Armazenamento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3317247071408128
+    m_Localized: Armazene arquivos com facilidade.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3317682071064576
+    m_Localized: Configure Armazenamento do Firebase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51197872595718144
+    m_Localized: "Falha ao carregar the UnityEditor.iOS.Extensions.Xcode dll.\r\nO
+      support iOS est\xE1 instalado no Unity Editor?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51199427545845760
+    m_Localized: "Firebase IOS builds n\xE3o s\xE3o suportadas no Windows. Por favor,
+      execute a build em um PC macOS."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51203258912526336
+    m_Localized: "Nenhum arquivo {file} encontrado neste projeto.\nRealizar uma build
+      sem um arquivo de configura\xE7\xE3o do Firebase resultar\xE1 em um aplicativo
+      que n\xE3o ser\xE1 inicializado."
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976835
+  - m_Id: 54720136851148800
+    m_Localized: "{file} Arquivo n\xE3o encontrado {clientId}, Google Sign-In ir\xE1
+      falhar ao inicializar.\r\nPara resolver este problema, siga as instru\xE7\xF5es
+      em: {linkInfo}"
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976835
+  - m_Id: 55118166699986944
+    m_Localized: Enviar convites do Firebase a partir do seu aplicativo
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 1163561765529976835
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00d012d4f623000000d012612427000000d01248ce24000000d0d254a300000000d0d2d1a828000000d052140d29000000d05288d729000000d0926c482a000000d09221dd2a010000d05200f601090000d0125800780a0000d0129b73720a0000d052cfcf930b0000d0d2ba17e9b50000d012afac67c200

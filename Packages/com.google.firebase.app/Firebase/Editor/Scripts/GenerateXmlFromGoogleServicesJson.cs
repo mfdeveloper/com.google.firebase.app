@@ -36,15 +36,17 @@
 //   - If targeting Android, the googleservices.xml file will automatically
 //     be created in `Assets/Plugins/Android/google-play-services/res/values`.
 
+using UnityEngine.Localization;
+
 namespace Firebase.Editor {
 
-  using Google;
-  using GooglePlayServices;
   using System;
   using System.Collections.Generic;
   using System.IO;
   using UnityEngine;
   using UnityEditor;
+  using Google;
+  using GooglePlayServices;
 
   /// <summary>
   /// Asset processor that generates the Firebase configuration file from google-services.json or
@@ -91,6 +93,11 @@ namespace Firebase.Editor {
     private static char[] FIELD_DELIMITER = new char[] { '=' };
     // This flag, when set to true stops/guards the dialog from spamming the user.
     private static bool spamguard;
+
+    // LocalizedString with table/key references to localize error and warning messages
+    private static LocalizedString MessagesLocalizedString => new LocalizedString() {
+      TableReference = "FirebaseMessages"
+    };
 
     // Attempt to generate Google Services resources when this class loads.
     static GenerateXmlFromGoogleServicesJson() {
@@ -221,21 +228,44 @@ namespace Firebase.Editor {
             break;
         }
       } else {
-        Debug.LogWarning(DocRef.CouldNotFindPlistOrJson);
-        if (logMessageForNoConfigFiles != null) {
+        MessagesLocalizedString.TableEntryReference = "CouldNotFindPlistOrJson";
+
+        var asyncOperationFile = MessagesLocalizedString.GetLocalizedStringAsync();
+        asyncOperationFile.Completed += (op) =>
+        { 
+          if (op.IsDone && !string.IsNullOrEmpty(op.Result)) { 
+            Debug.LogWarning(op.Result);
+          }
+        };
+      
+        if (logMessageForNoConfigFiles != null) { 
           Measurement.ReportWithBuildTarget("generateconfig/failed/noconfig", null,
                                             "Config File Missing");
         }
-        logMessageForNoConfigFiles = logMessageForNoConfigFiles ?? LogErrorIfEnabled;
-        logMessageForNoConfigFiles(
-            String.Format(DocRef.GoogleServicesFileBundleIdMissing,
-                GetAndroidApplicationId(),
-                (EditorUserBuildSettings.selectedBuildTargetGroup == BuildTargetGroup.iOS ||
-                 EditorUserBuildSettings.selectedBuildTargetGroup == BuildTargetGroup.tvOS) ?
-                    "GoogleService-Info.plist" : "google-services.json",
-                String.Join("\n", BundleIdsFromBundleIdsByConfigFile(
-                    ConfigFileDirectory).ToArray()),
-                Link.AndroidAddApp));
+      
+        MessagesLocalizedString.TableEntryReference = "GoogleServicesFileBundleIdMissing";
+      
+        var asyncOperation = MessagesLocalizedString.GetLocalizedStringAsync(
+          new 
+          {
+            bundleId = GetAndroidApplicationId(),
+            googleServicesFile = (EditorUserBuildSettings.selectedBuildTargetGroup == BuildTargetGroup.iOS ||
+                                EditorUserBuildSettings.selectedBuildTargetGroup == BuildTargetGroup.tvOS) ?
+                "GoogleService-Info.plist" : "google-services.json",
+            availableBundleIds = string.Join(
+                "\n", 
+                BundleIdsFromBundleIdsByConfigFile(ConfigFileDirectory).ToArray()
+            ),
+            androidAddAppLink = "https://firebase.google.com/docs/unity/setup#add_firebase_to_your_app_1" 
+          }    
+        );
+      
+        asyncOperation.Completed += (op) => {
+          if (op.IsDone && !string.IsNullOrEmpty(op.Result)) {
+            logMessageForNoConfigFiles = logMessageForNoConfigFiles ?? LogErrorIfEnabled;
+            logMessageForNoConfigFiles(op.Result);
+          }
+        };
       }
     }
 
@@ -352,11 +382,24 @@ namespace Firebase.Editor {
             LogMessage logMessageForMissingBundleId = null) {
       bundleId = bundleId ?? GetAndroidApplicationId();
       if (ConfigFileDirectory.Count == 0) {
-        string message = String.Format(DocRef.GoogleServicesAndroidFileMissing,
-            GOOGLE_SERVICES_INPUT_FILE, GOOGLE_SERVICES_OUTPUT_FILE,
-            Link.AndroidSetup);
-        logMessageForNoConfigFiles = logMessageForNoConfigFiles ?? LogErrorIfEnabled;
-        logMessageForNoConfigFiles(message);
+        MessagesLocalizedString.TableEntryReference = "GoogleServicesAndroidFileMissing";
+        var asyncOperation = MessagesLocalizedString.GetLocalizedStringAsync(
+          new
+          {
+            googleServicesFile = GOOGLE_SERVICES_INPUT_FILE,
+            googleServicesOutputFile = GOOGLE_SERVICES_OUTPUT_FILE,
+            androidSetupLink = "https://firebase.google.com/docs/unity/setup#setup_for_android"
+          }
+        );
+      
+        asyncOperation.Completed += (op) =>
+        {
+          if (op.IsDone && !string.IsNullOrEmpty(op.Result)) {
+            logMessageForNoConfigFiles = logMessageForNoConfigFiles ?? LogErrorIfEnabled;
+            logMessageForNoConfigFiles(op.Result);
+          }
+        };
+      
         return null;
       }
 
@@ -371,25 +414,52 @@ namespace Firebase.Editor {
           fileCount++;
         }
       }
-      if (selectedFile == null) {
-        // If no config file is found log an error.
-        logMessageForMissingBundleId = logMessageForMissingBundleId ?? LogErrorIfEnabled;
-        logMessageForMissingBundleId(
-            String.Format(DocRef.GoogleServicesFileBundleIdMissing,
-                bundleId,
-                fileType == ConfigFileType.Json ? "google-services.json" :
-                    "GoogleService-Info.plist",
-                String.Join("\n", BundleIdsFromBundleIdsByConfigFile(
-                    ConfigFileDirectory).ToArray()),
-                Link.AndroidAddApp));
+      if (selectedFile == null)
+      {
+        MessagesLocalizedString.TableEntryReference = "GoogleServicesFileBundleIdMissing";
+      
+        var asyncOperation = MessagesLocalizedString.GetLocalizedStringAsync(
+          new
+          {
+            bundleId,
+            googleServicesFile = fileType == ConfigFileType.Json ? "google-services.json" : "GoogleService-Info.plist",
+            availableBundleIds = string.Join(
+              "\n", 
+              BundleIdsFromBundleIdsByConfigFile(ConfigFileDirectory).ToArray()
+            ),
+            androidAddAppLink = Link.FIREBASE_ANDROID_ADD_APP
+          }
+        );
+      
+        asyncOperation.Completed += (op) =>
+        {
+          if (op.IsDone && !string.IsNullOrEmpty(op.Result)) {
+              logMessageForMissingBundleId = logMessageForMissingBundleId ?? LogErrorIfEnabled;
+              logMessageForMissingBundleId(op.Result);
+          }
+        };
+          
       } else if (fileCount > 1 && mode != FindGoogleServicesFileMode.ReturnAll) {
-        // If more than one config file is present notify the user of the file we selected.
-        LogInfoIfEnabled(String.Format(DocRef.GoogleServicesFileMultipleFiles,
-            fileType == ConfigFileType.Plist ?
-                GOOGLE_SERVICES_INPUT_FILE : GOOGLE_SERVICE_INFO_INPUT_FILE,
-                selectedFile, bundleId,
-            String.Join("\n", (new List<string>(ConfigFileDirectory.Keys)).ToArray())));
+          
+        MessagesLocalizedString.TableEntryReference = "GoogleServicesFileMultipleFiles";
+
+        var asyncOperation = MessagesLocalizedString.GetLocalizedStringAsync(
+        new
+          {
+            files = fileType == ConfigFileType.Plist ? GOOGLE_SERVICES_INPUT_FILE : GOOGLE_SERVICE_INFO_INPUT_FILE,
+            usingFile = selectedFile,
+            bundleId,
+            presentFiles = string.Join("\n", (new List<string>(ConfigFileDirectory.Keys)).ToArray())
+          }    
+        );
+      
+        asyncOperation.Completed += (op) => {
+          if (op.IsDone && !string.IsNullOrEmpty(op.Result)) {
+            LogInfoIfEnabled(op.Result);
+          }
+        };
       }
+      
       return selectedFile;
     }
 
@@ -477,7 +547,7 @@ namespace Firebase.Editor {
       var configFile = FindGoogleServicesFile(fileType, bundleId,
                                               logMessageForNoConfigFiles: LogNoMessage,
                                               logMessageForMissingBundleId: LogNoMessage);
-      if (configFile != null || UnityCompat.InBatchMode) {
+      if (string.IsNullOrEmpty(configFile) || UnityCompat.InBatchMode) {
         UpdateJson(UnityCompat.InBatchMode);
         return;
       }
@@ -525,28 +595,74 @@ namespace Firebase.Editor {
       } catch (System.ComponentModel.Win32Exception exception) {
         Measurement.ReportWithBuildTarget("generateconfig/failed/toolmissing", null,
                                           "Config File Tool Missing");
-        Debug.LogError(
-            String.Format(DocRef.GoogleServicesToolMissing,
-                          resourceGenerator.Executable, GOOGLE_SERVICES_OUTPUT_FILE, inputPath,
-                          exception.ToString()));
+        
+        MessagesLocalizedString.TableEntryReference = "GoogleServicesToolMissing";
+
+        var asyncOperation = MessagesLocalizedString.GetLocalizedStringAsync(
+        new
+          {
+            resourceGenerator = resourceGenerator.Executable,
+            googleServicesOutputFile = GOOGLE_SERVICES_OUTPUT_FILE,
+            inputPath,
+            exceptionMessage = exception.ToString()
+          }
+        );
+        
+        asyncOperation.Completed += (op) => {
+            if (op.IsDone && !string.IsNullOrEmpty(op.Result)) {
+                Debug.LogError(op.Result);
+            }
+        };
+        
         return result;
       }
+      
       if (result.exitCode == 0) {
         Measurement.ReportWithBuildTarget("generateconfig/success", null,
                                           "Config File Generation Successful");
-        if (showCommandLine) {
-          Debug.Log(
-              String.Format(DocRef.GoogleServicesAndroidGenerateXml,
-                  GOOGLE_SERVICES_OUTPUT_PATH, inputPath, commandLineForLog));
+        if (showCommandLine)
+        {
+          MessagesLocalizedString.TableEntryReference = "GoogleServicesAndroidGenerateXml";
+
+          var asyncOperation = MessagesLocalizedString.GetLocalizedStringAsync(
+            new
+            {
+              googleServicesOutputFile = GOOGLE_SERVICES_OUTPUT_PATH,
+              inputPath,
+              commandLineForLog
+            }   
+        );
+        
+          asyncOperation.Completed += (op) => {
+            if (op.IsDone && !string.IsNullOrEmpty(op.Result)) {
+              Debug.Log(op.Result);
+            }
+          };
         }
       } else {
         Measurement.ReportWithBuildTarget("generateconfig/failed/toolfailed", null,
                                           "Config File Tool Failed");
-        Debug.LogError(
-            String.Format(DocRef.GoogleServicesAndroidGenerationFailed,
-                GOOGLE_SERVICES_OUTPUT_FILE, inputPath, commandLineForLog,
-                result.stdout + "\n" + result.stderr + "\n"));
+        
+        MessagesLocalizedString.TableEntryReference = "GoogleServicesAndroidGenerationFailed";
+
+        var asyncOperation = MessagesLocalizedString.GetLocalizedStringAsync(
+        new
+          {
+            googleServiceOutputFile = GOOGLE_SERVICES_OUTPUT_PATH,
+            result = result.stdout + "\n" + result.stderr + "\n",
+            inputPath,
+            commandLineForLog
+          }    
+        );
+        
+        asyncOperation.Completed += (op) =>
+        {
+          if (op.IsDone && !string.IsNullOrEmpty(op.Result)) {
+            Debug.LogError(op.Result);
+          }
+        };
       }
+      
       return result;
     }
 
@@ -566,11 +682,39 @@ namespace Firebase.Editor {
         } catch (Exception e) {
           Measurement.ReportWithBuildTarget("generateconfig/failed/ioerror", null,
                                             "Config File Generation Failed");
-          Debug.LogError(
-              String.Format(DocRef.GoogleServicesAndroidGenerationFailed,
-                  GOOGLE_SERVICES_OUTPUT_PATH, googleServicesFile,
-                  String.Format(DocRef.UnableToCreateDirectory, outputDir), ""));
-          Debug.LogException(e);
+
+          MessagesLocalizedString.TableEntryReference = "UnableToCreateDirectory";
+          var asyncOperationDir = MessagesLocalizedString.GetLocalizedStringAsync(
+          new
+            {
+              directory = outputDir
+            }    
+          );
+          
+          asyncOperationDir.Completed += (opDir) => {
+            MessagesLocalizedString.TableEntryReference = "GoogleServicesAndroidGenerationFailed";
+          
+            // TODO: [Refactor] Try use async/await instead of "AsyncOperationHandle.Completed" event,
+            //       in order to avoid callback hell
+            var asyncOperation = MessagesLocalizedString.GetLocalizedStringAsync(
+            new
+            {
+              googleServiceOutputFile = GOOGLE_SERVICES_OUTPUT_PATH,
+              inputPath = googleServicesFile,
+              commandLineForLog = opDir.IsDone && !string.IsNullOrEmpty(opDir.Result) ? opDir.Result : "",
+              result = ""
+            }
+          );
+          
+            asyncOperation.Completed += (op) => {
+              if (op.IsDone && !string.IsNullOrEmpty(op.Result)) {
+                Debug.LogError(op.Result);
+              }
+          
+              Debug.LogException(e);
+            };
+          };
+          
           return;
         }
       }
@@ -624,8 +768,22 @@ namespace Firebase.Editor {
           },
           sourceFilename,
           showCommandLine: false);
+        
         if (result.exitCode != 0) {
-          Debug.LogError(String.Format(DocRef.CouldNotTranslatePlist, sourceFilename));
+            
+          MessagesLocalizedString.TableEntryReference = "CouldNotTranslatePlist";
+          var asyncOperation = MessagesLocalizedString.GetLocalizedStringAsync(
+          new
+          {
+            fileName = sourceFilename
+          }   
+        );
+        
+          asyncOperation.Completed += (op) => {
+            if (op.IsDone && !string.IsNullOrEmpty(op.Result)) {
+              Debug.LogError(op.Result);
+            }
+          };
         }
       }
     }
@@ -649,9 +807,20 @@ namespace Firebase.Editor {
           AssetDatabase.CopyAsset(sourceFilename,
               GOOGLE_SERVICES_DESKTOP_OUTPUT_PATH);
         } catch {
-          Debug.LogError(String.Format(DocRef.CouldNotCopyFile,
-              Path.Combine(projectDir, sourceFilename),
-              Path.Combine(projectDir, GOOGLE_SERVICES_DESKTOP_OUTPUT_PATH)));
+          MessagesLocalizedString.TableEntryReference = "CouldNotCopyFile";
+          var asyncOperation = MessagesLocalizedString.GetLocalizedStringAsync(
+            new
+            {
+              fileName = Path.Combine(projectDir, sourceFilename),
+              googleServicesOutputPath = Path.Combine(projectDir, GOOGLE_SERVICES_DESKTOP_OUTPUT_PATH)
+            }
+          );
+        
+          asyncOperation.Completed += (op) => {
+            if (op.IsDone && !string.IsNullOrEmpty(op.Result)) {
+              Debug.LogError(op.Result);
+            }
+          };
         }
       }
     }
@@ -665,11 +834,27 @@ namespace Firebase.Editor {
         try {
           Directory.CreateDirectory(outputDir);
         } catch (Exception e) {
-          Debug.LogError(String.Format(DocRef.UnableToCreateDirectory, outputDir));
-          Debug.LogException(e);
+          MessagesLocalizedString.TableEntryReference = "UnableToCreateDirectory";
+
+          var asyncOperation = MessagesLocalizedString.GetLocalizedStringAsync(
+          new
+            {
+              directory = outputDir
+            }    
+          );
+        
+          asyncOperation.Completed += (op) => {
+            if (op.IsDone && !string.IsNullOrEmpty(op.Result)) {
+              Debug.LogError(op.Result);
+            }
+        
+            Debug.LogException(e);
+          };
+        
           return false;
         }
       }
+      
       return true;
     }
 
