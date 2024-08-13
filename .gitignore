@@ -98,3 +98,14 @@ google-services*.json
 google-services*.json.meta
 GoogleService-Info.plist
 GoogleService-Info.plist.meta
+
+# --- Android.gitignore ---
+
+# Package Files #
+/[Aa]ssets/**/*.jar
+/[Aa]ssets/**/*.jar.meta
+/[Aa]ssets/**/*.aar
+/[Aa]ssets/**/*.aar.meta
+
+# Compiled class file
+/[Aa]ssets/**/*.class
