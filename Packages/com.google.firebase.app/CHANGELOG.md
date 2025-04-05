@@ -71,6 +71,98 @@ Support
 
 Release Notes
 -------------
+### 12.4.1
+- Changes
+    - General: Remove unresolved SWIG string symbols.
+      ([#1139](https://github.com/firebase/firebase-unity-sdk/issues/1139)).
+
+### 12.4.0
+- Changes
+    - General: Update to Firebase C++ SDK version 12.4.0.
+    - General (iOS): Update to Firebase Cocoapods version 11.4.2.
+    - General (Android): Update to Firebase Android BoM version 33.5.1.
+    - General (Android): Reduced minSdkVersion back to 23.
+    - Analytics: Add support for Parameters of Lists of Dictionaries, needed
+      by some events such as ViewCart.
+      ([#1056](https://github.com/firebase/firebase-unity-sdk/issues/1056)).
+    - Analytics: Renamed ParameterGroupId to ParameterGroupID, to be
+      consistent with other similarly named variables. ParameterGroupId
+      is considered deprecated, and will be removed in the future.
+    - Analytics: Deprecated the Dispose functions, as they are no longer
+      necessary for cleaning up memory.
+    - Auth (Android): Setting PhotoUrl to empty string or null with
+      UpdateUserProfile clears the field, making it consistent with the
+      other platforms.
+      ([#1112](https://github.com/firebase/firebase-unity-sdk/issues/1112)).
+
+### 12.3.0
+- Changes
+    - General: Update to Firebase C++ SDK version 12.3.0.
+    - General (Android): Update to Firebase Android BoM version 33.3.0.
+    - General (Android): Updated the minSdkVersion to 24.
+    - General (iOS): Update to Firebase Cocoapods version 11.2.0.
+    - General: Update to EDM4U version 1.2.183.
+    - Messaging (Android): Fixed issue with TokenReceived not being called
+      when the application has a cached token from a previous run.
+      https://github.com/firebase/quickstart-unity/issues/1088.
+    - Remote Config: Fixed ConfigInfo fields to default to 0 when
+      not throttled or having previous fetch data.
+      ([#1058](https://github.com/firebase/firebase-unity-sdk/issues/1058)).
+
+### 12.2.1
+- Changes
+    - Messaging: Fixed a crash when opening a push notification.
+      ([#1091](https://github.com/firebase/firebase-unity-sdk/issues/1091)).
+
+### 12.2.0
+- Changes
+    - General: Update to Firebase C++ SDK version 12.2.0.
+    - General (Android): Update to Firebase Android BoM version 33.1.2.
+    - General (iOS): Update to Firebase Cocoapods version 11.0.0.
+    - General: Update to EDM4U version 1.2.182.
+    - Messaging: Deprecated the Dispose functions, as they are no longer
+      necessary for cleaning up memory.
+
+### 12.1.0
+- Changes
+    - General: Update to Firebase C++ SDK version 12.1.0.
+    - General (Android): Update to Firebase Android BoM version 33.1.1.
+    - General (iOS): Update to Firebase Cocoapods version 10.28.1.
+    - General: Update to EDM4U version 1.2.181.
+    - Analytics (iOS): Add support for
+      `InitiateOnDeviceConversionMeasurementWithHashedEmailAddress` and
+      `InitiateOnDeviceConversionMeasurementWithHashedPhoneNumber`.
+    - Messaging (Android): Fixed a potential race condition on receiving
+      messages after cleanup.
+      ([#1030](https://github.com/firebase/firebase-unity-sdk/issues/1030)).
+    - Messaging (iOS): Fixed an issue with notifications being lost if they
+      were received before Firebase Messaging was initialized.
+      ([#377](https://github.com/firebase/firebase-unity-sdk/issues/377)).
+
+### 12.0.0
+- Changes
+    - General: Update to Firebase C++ SDK version 12.0.0.
+    - General (Android): Update to Firebase Android BoM version 33.0.0.
+    - General (Android): Updated minSdkVersion to 23, and targetSdkVersion
+      and compileSdkVersion to 34.
+    - General (iOS): Update to Firebase Cocoapods version 10.25.0.
+    - General (iOS): Minimum iOS deployment target is now 13.0.
+    - General: Minimum supported editor version is now Unity 2020.
+    - Auth: Remove deprecated calls involving `SignInResult`, most of
+      which were appended with `_DEPRECATED`.
+    - Remote Config: Remove deprecated `ConfigSettings.MinimumFetchInternalInMilliseconds`,
+      use `ConfigSettings.MinimumFetchIntervalInMilliseconds` instead.
+
+### 11.9.0
+- Changes
+    - General: Update to Firebase C++ SDK version 11.10.0.
+    - General (Android): Update to Firebase Android BoM version 32.8.1.
+    - General (iOS): Update to Firebase Cocoapods version 10.24.0.
+    - App Check: Fix potential crash when fetching a token.
+      ([#877](https://github.com/firebase/firebase-unity-sdk/issues/877)).
+    - Storage (Desktop): Removed 5-minute timeout for uploads and downloads.
+      ([#968](https://github.com/firebase/firebase-unity-sdk/issues/968)).
+
 ### 11.8.1
 - Changes
     - Firestore (iOS): Fix undefined absl symbols error.
