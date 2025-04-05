@@ -302,13 +302,17 @@ InitTestScene*
 node_modules.meta
 package-lock.json.meta
 
-# Unity untracked dirs (with ~)
-Samples~/
-Documentation~/
-
 # Bash/Shell script copied dirs and files
 Images/
 Images.meta
 LICENSE
 LICENSE.meta
 README.*
+
+# Plugins
+!Plugins/**/*.dll
+!Firebase/**/*.dll
+!Firebase/**/*.pdb
+!Firebase/**/*.pdb.meta
+!Firebase/Editor/*.exe
+!Firebase/Editor/*.exe.meta

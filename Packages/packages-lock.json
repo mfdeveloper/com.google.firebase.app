@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.google.external-dependency-manager": {
-      "version": "1.2.181",
+      "version": "1.2.183",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -12,7 +12,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.google.external-dependency-manager": "1.2.177"
+        "com.google.external-dependency-manager": "1.2.183"
       }
     },
     "com.unity.2d.animation": {

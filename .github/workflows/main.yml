@@ -2,7 +2,7 @@ name: Unity Package CI
 on:
   push:
     branches:
-    - upm-package-embedded
+    - upm-package-embedded-editor-dll
   repository_dispatch:
     types: [on-demand-test]
 env:
