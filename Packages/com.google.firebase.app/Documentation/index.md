@@ -71,6 +71,76 @@ Support
 
 Release Notes
 -------------
+### 12.8.0
+-   Changes
+    - General: Update to Firebase C++ SDK version 12.7.0.
+    - General (iOS): Update to Firebase Cocoapods version 11.10.0.
+    - General (Android): Update to Firebase Android BoM version 33.11.0.
+
+### 12.7.0
+- Changes
+    - General (iOS): Update to Firebase Cocoapods version 11.9.0.
+    - General (Android): Update to Firebase Android BoM version 33.10.0.
+    - Crashlytics: Fix a problem with on-demand fatals blocking audio playback.
+
+### 12.6.0
+- Changes
+    - General: Update to Firebase C++ SDK version 12.6.0.
+    - General (iOS): Update to Firebase Cocoapods version 11.8.1.
+    - General (Android): Update to Firebase Android BoM version 33.9.0.
+    - General: Update to EDM4U version 1.2.185.
+    - General (Android): Support 16 KB page sizes, needed by Android 15.
+      For more info, see https://developer.android.com/guide/practices/page-sizes
+
+### 12.5.0
+- Changes
+    - General: Update to Firebase C++ SDK version 12.5.0.
+    - General (iOS): Update to Firebase Cocoapods version 11.6.0.
+    - General (Android): Update to Firebase Android BoM version 33.7.0.
+
+### 12.4.1
+- Changes
+    - General: Remove unresolved SWIG string symbols.
+      ([#1139](https://github.com/firebase/firebase-unity-sdk/issues/1139)).
+
+### 12.4.0
+- Changes
+    - General: Update to Firebase C++ SDK version 12.4.0.
+    - General (iOS): Update to Firebase Cocoapods version 11.4.2.
+    - General (Android): Update to Firebase Android BoM version 33.5.1.
+    - General (Android): Reduced minSdkVersion back to 23.
+    - Analytics: Add support for Parameters of Lists of Dictionaries, needed
+      by some events such as ViewCart.
+      ([#1056](https://github.com/firebase/firebase-unity-sdk/issues/1056)).
+    - Analytics: Renamed ParameterGroupId to ParameterGroupID, to be
+      consistent with other similarly named variables. ParameterGroupId
+      is considered deprecated, and will be removed in the future.
+    - Analytics: Deprecated the Dispose functions, as they are no longer
+      necessary for cleaning up memory.
+    - Auth (Android): Setting PhotoUrl to empty string or null with
+      UpdateUserProfile clears the field, making it consistent with the
+      other platforms.
+      ([#1112](https://github.com/firebase/firebase-unity-sdk/issues/1112)).
+
+### 12.3.0
+- Changes
+    - General: Update to Firebase C++ SDK version 12.3.0.
+    - General (Android): Update to Firebase Android BoM version 33.3.0.
+    - General (Android): Updated the minSdkVersion to 24.
+    - General (iOS): Update to Firebase Cocoapods version 11.2.0.
+    - General: Update to EDM4U version 1.2.183.
+    - Messaging (Android): Fixed issue with TokenReceived not being called
+      when the application has a cached token from a previous run.
+      https://github.com/firebase/quickstart-unity/issues/1088.
+    - Remote Config: Fixed ConfigInfo fields to default to 0 when
+      not throttled or having previous fetch data.
+      ([#1058](https://github.com/firebase/firebase-unity-sdk/issues/1058)).
+
+### 12.2.1
+- Changes
+    - Messaging: Fixed a crash when opening a push notification.
+      ([#1091](https://github.com/firebase/firebase-unity-sdk/issues/1091)).
+
 ### 12.2.0
 - Changes
     - General: Update to Firebase C++ SDK version 12.2.0.

@@ -93,12 +93,21 @@ crashlytics-build.properties
 # -- UPM packages ---
 !Packages/*.app
 
+# --- External Dependency Manager ---
+/[Pp]rojectSettings/AndroidResolverDependencies.xml
+/[Aa]ssets/GeneratedLocalRepo/*
+/[Aa]ssets/GeneratedLocalRepo.*
+/[Aa]ssets/Plugins/Android/mainTemplate.gradle
+/[Aa]ssets/Plugins/Android/mainTemplate.gradle.*
+/[Aa]ssets/Plugins/Android/settingsTemplate.gradle
+/[Aa]ssets/Plugins/Android/settingsTemplate.gradle.*
+
 # --- Firebase/Google Cloud ---
-google-services.json
-google-services.json.meta
+/[Aa]ssets/[Ss]treamingAssets/google-services-desktop.*
+google-services.*
 GoogleService-Info.plist
-GoogleService-Info.plist.meta
+GoogleService-Info.plist.*
 
 # Hide Firebase generated files 
 # (e.g google-services.xml generated from google-services.json)
-Plugins/Android/*.androidlib/res/**/*.xml
+**/Plugins/Android/*.androidlib/res/**/*.xml
