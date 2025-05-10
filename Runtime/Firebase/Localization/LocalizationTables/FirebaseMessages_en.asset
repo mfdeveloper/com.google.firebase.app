@@ -1,0 +1,380 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: FirebaseMessages_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: d112259503298c24e814cc5957fb325a, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 1163561765529976834
+  m_TableData:
+  - m_Id: 701502771200
+    m_Localized: "Project Bundle ID {bundleId} does not match any bundle IDs in your
+      {googleServicesFile} files.\r\nThis will result in an app that will fail to
+      initialize.\r\n\r\nAvailable Bundle IDs:\r\n{availableBundleIds}\r\n\r\nYou
+      need to either:\n\r\n* Fix your app's bundle ID under \"Player Settings -->
+      Bundle Identifier\"\r\nor:\n\r\n* Add another app to your firebase project\r\n 
+      Goto {linkInfo}\r and add the new configuration file to your project."
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 39543026929664
+    m_Localized: 'Multiple {file} files found in your project. Using {usingFile}
+      (bundle ID {bundleId}) to configure Firebase.
+
+
+      All files present:
+
+      {presentFiles}'
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 40468391055360
+    m_Localized: 'Unable to find command line tool {resourceGenerator} required for
+      Firebase Android resource generation.
+
+      {resourceGenerator} is required
+      to generate the Firebase Android resource file {googleServicesOutputFile} from
+      {inputPath}. Without Firebase Android resources, your app will fail to initialize.
+
+      {resourceGenerator}
+      was distributed with each Firebase Unity SDK plugin, was it deleted?
+
+
+
+      {exceptionMessage}'
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 42426845810688
+    m_Localized: Could not locate google-services.json or GoogleService-Info.plist
+      files.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43037200928768
+    m_Localized: 'No {googleServicesFile} files found in your project so it is not
+      possible to generate Firebase Android resources file {googleServicesOutputFile}.
+
+      Building
+      without Firebase Android resources ({googleServicesOutputFile}) will result
+      in an app that will fail to initialize.
+
+
+
+      To resolve this problem, follow
+      the setup instructions at {androidSetupLink}'
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 44705539870720
+    m_Localized: "Generated Firebase Android Resources file {googleServicesOutputFile}
+      from {inputPath}\r\n\t\r\nExecuted {commandLineForLog}"
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 45136152285184
+    m_Localized: 'Generation of the Firebase Android resource file {googleServiceOutputFile}
+      from {inputPath} failed.
+
+      If you have not included a valid Firebase Android
+      resources in your app it will fail to initialize.
+
+
+
+      {commandLineForLog}
+
+      {result}
+
+
+
+      You
+      can start to diagnose this issue by executing "{commandLineForLog}" from the
+      command line.'
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 46005681836032
+    m_Localized: Could not parse the file {fileName} as a plist file. Redownload
+      from the firebase console?
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 46490547572736
+    m_Localized: Could not copy file {fileName} to {googleServicesOutputPath}.
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 328604216119296
+    m_Localized: Failed to create directory {directory}. Is the directory read-only?
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 2535430869405696
+    m_Localized: 'Python executable executable {message} failed.
+
+
+
+      If you''re
+      using Windows 7/8 you could try installing the Windows Universal C Runtime
+
+      https://www.microsoft.com/en-us/download/details.aspx?id=48234
+
+      then
+      try again.
+
+
+
+      Or you could try:
+
+      - Installing Python
+
+      - Add
+      Python it to your path
+
+      - Delete the {executable} executable which will
+      force Firebase to use the Python interpreter
+
+      - Restart Unity'
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 2538013444984832
+    m_Localized: Incorrect Minimum Android Version.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2940590615613440
+    m_Localized: 'Minimum Target Android SDK needs to be set to level "{minApiLevel}"
+      or above.
+
+
+
+      Change the Android SDK version to at least "API level {minApiLevel}"
+      in:
+
+      Build Settings -> Player Settings -> Other Settings -> Identification
+      -> Minimum API Level'
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 2942004691652608
+    m_Localized: Change Android SDK Version?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2946692640067584
+    m_Localized: 'Failed to set Minimum Target Android SDK level to {minApiLevel},
+      this may be because
+
+      you have an older version of the Android SDK installed
+      on your machine.
+
+
+      Try upgrading your Android SDK and setting the Android
+      SDK level to {minApiLevel} again.'
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 2948480583782400
+    m_Localized: Yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2948517292331008
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3255768771121152
+    m_Localized: Firebase gives you the tools and infrastructure from Google to help
+      you develop, grow and earn money from your app.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3257408483938304
+    m_Localized: Android
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3257840597913600
+    m_Localized: Ready to use Firebase on Android.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3258292173459456
+    m_Localized: Open in Console
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3258745489641472
+    m_Localized: To connect Firebase for Android, add the {googleServicesFile} from
+      Firebase to your Assets.
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 3259479698362368
+    m_Localized: Learn More
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3261406368681984
+    m_Localized: iOS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3261575667568640
+    m_Localized: Ready to use Firebase on iOS.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3262755382677504
+    m_Localized: To connect Firebase for iOS, add the {googleServicesFile} from Firebase
+      to your Assets.
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 3282899630739456
+    m_Localized: Analytics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3282979830026240
+    m_Localized: Measure user activity and engagement with free, easy, and unlimited
+      analytics.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3283219509334016
+    m_Localized: Log an Analytics event
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3288924928790528
+    m_Localized: Authentication
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3289012539412480
+    m_Localized: Sign in and manage users with ease, accepting emails, Google Sign-In,
+      Facebook and other login providers.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3289506695532544
+    m_Localized: Email and password authentication
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3290300593393664
+    m_Localized: Cloud Messaging
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3290711870066688
+    m_Localized: Deliver and receive messages and notifications reliably across cloud
+      and device.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3291120831483904
+    m_Localized: Set up Firebase Cloud Messaging
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3292544311152640
+    m_Localized: Crashlytics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3292711168954368
+    m_Localized: Get clear, actionable insight into app issues with this powerful
+      crash reporting solution.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3293564093255680
+    m_Localized: Set up Firebase Crashlytics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3294666616393728
+    m_Localized: Realtime Database
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3295043982118912
+    m_Localized: Store and sync data across all clients in realtime.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3295296634408960
+    m_Localized: Set up Firebase Realtime Database
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3296534126055424
+    m_Localized: Dynamic Links
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3296763671924736
+    m_Localized: Send users to the right place in your app whether or not it is already
+      installed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3297733860577280
+    m_Localized: Cloud Functions for Firebase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3298144327749632
+    m_Localized: Set up Cloud Functions for Firebase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3301653093732352
+    m_Localized: Remote Config
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3314882905821184
+    m_Localized: Customize and experiment with app behavior using cloud-based configuration
+      parameters.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3315429062922240
+    m_Localized: Set up Firebase Remote Config
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3317079907422208
+    m_Localized: Storage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3317247071408128
+    m_Localized: Store files with ease.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3317682071064576
+    m_Localized: Set up Firebase Storage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51197872595718144
+    m_Localized: 'Failed to load the UnityEditor.iOS.Extensions.Xcode dll.
+
+      Is
+      iOS support installed?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51199427545845760
+    m_Localized: Firebase iOS builds are not supported on Windows. Please build on
+      a OSX machine instead.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51203258912526336
+    m_Localized: 'No {file} files found in your project.
+
+      Building without
+      Firebase configuration will result in an app that will fail to initialize.'
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 54720136851148800
+    m_Localized: '{file} file missing {clientId}, Google Sign-In will fail to initialize.
+
+      To
+      resolve this issue follow the instructions at {linkInfo}'
+    m_Metadata:
+      m_Items:
+      - rid: 1163561765529976834
+  - m_Id: 55118166699986944
+    m_Localized: Send Firebase invites from your app
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 1163561765529976834
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00d0d254a300000000d012d4f623000000d01248ce24000000d012612427000000d0d2d1a828000000d052140d29000000d05288d729000000d0926c482a000000d09221dd2a010000d05200f601090000d0125800780a0000d0129b73720a0000d052cfcf930b0000d0926f75970b0000d0d2ba17e9b50000d012afac67c200
